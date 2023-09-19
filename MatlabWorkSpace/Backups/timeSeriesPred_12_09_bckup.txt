@@ -1,0 +1,495 @@
+
+data = readtable("data.xlsx")
+
+%Remove data with no information  
+data = removevars(data, ["meter_serial", "meter_desc", "expwh","difference_exp_kwh","interval_start", "waste", "meter_id", "tariff_id", "impwh","stot", "pftot","md","qtot","difference_imp_kwh","epoch_timestamp","season_class_id","season_profile_id","day","week_number"]);
+
+missingElements = ismissing(data, {string(missing),NaN});
+rowsWithMissing = any(missingElements, 2);
+
+missingValuesTable = data(rowsWithMissing,:);
+
+data = rmmissing(data);
+
+data.day = day(data.date, "iso-dayofweek");
+
+
+low_time = 0.29;
+up_time = 0.75;
+weekDayCondition = (data.day ~= 6) & (data.day ~= 7) ;
+SatCondition     = (data.day == 6);
+SunCondition     = (data.day == 7);
+wrkHrsCondition  = (data.time >= low_time) & (data.time <= up_time) & (data.day ~= 6) & (data.day ~= 7);
+dayTimeCondition = (data.time >= low_time) & (data.time <= up_time);
+
+data.weekDay    = double(weekDayCondition);
+data.Sat         = double(SatCondition);
+data.Sun        = double(SunCondition);
+data.wrkHr      = double(wrkHrsCondition);
+data.dayTime    = double(dayTimeCondition);
+
+data.tou = categorical(data.tou);
+data = [data onehotencode(data(:,"tou")) ];
+data.Yptot= data.ptot;
+data = removevars(data,["date","time","day","tou","ptot"])
+
+
+                            
+% Fill outliers
+[data,outlierIndices,thresholdLow,thresholdHigh] = filloutliers(data,...
+    "linear","quartiles","ThresholdFactor",1,"DataVariables","Yptot");
+
+% Display results
+figure
+plot(data.Yptot,"Color",[77 190 238]/255,"DisplayName","Input data")
+hold on
+plot(data.Yptot,"Color",[0 114 189]/255,"LineWidth",1.5,...
+    "DisplayName","Cleaned data")
+
+% Plot outliers
+plot(find(outlierIndices(:,10)),data.Yptot(outlierIndices(:,10)),"x",...
+    "Color",[64 64 64]/255,"DisplayName","Outliers")
+
+% Plot filled outliers
+plot(find(outlierIndices(:,10)),data.Yptot(outlierIndices(:,10)),".",...
+    "MarkerSize",12,"Color",[217 83 25]/255,"DisplayName","Filled outliers")
+
+% Plot outlier thresholds
+plot([xlim missing xlim],[thresholdLow.Yptot*[1 1] NaN thresholdHigh.Yptot*[1 1]],...
+    "Color",[145 145 145]/255,"DisplayName","Outlier thresholds")
+
+hold off
+title("Number of outliers cleaned: " + nnz(outlierIndices(:,10)))
+legend
+ylabel("Yptot")
+clear thresholdLow thresholdHigh
+
+histogram(data.Yptot)
+summary(data)
+
+
+SARIMAX MODEL
+TT  = table2timetable(data);
+lengthT = size(TT,1);
+exoVar           = table2array(data(:,2:end-1));
+
+respVar           = data.Yptot;
+
+
+
+p = 1; d = 1; q = 1;
+P = 1; D = 1; S = 4;
+
+mdlARIMA = arima(p, d, q)
+presample = 1:mdlARIMA.P;
+estSample = (mdlARIMA.P+1):lengthT;
+
+mdlARIMAest = estimate(mdlARIMA, respVar(estSample),'Y0', respVar(presample),  "Display", "params")
+
+nForecast = 24;
+
+PredLength = TT.tstamp(end-nForecast+1:end);
+
+[pred, predMSE] = forecast(mdlARIMAest, nForecast, "Y0", respVar(1:end-nForecast));
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+display(predMSE)
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast of System Power")
+legend
+hold off
+
+
+
+mdlSARIMAX = modelTimeSeries(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast Peak, OffPeak & Standard")
+legend
+hold off
+
+
+mdlSARIMAX = modelTimeSeries2(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast only OffPeak")
+legend
+hold off
+
+
+
+mdlSARIMAX = modelTimeSeries3(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("ARIMAX Forcast Peak & OffPeak")
+legend
+hold off
+
+
+
+
+mdlSARIMAX = modelTimeSeries4(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast Peak, OffPeak,Standard, WeekDay, sat, sun, DayTime, Wrk Hours")
+legend
+hold off
+
+
+mdlSARIMAX = modelTimeSeries5(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast tou_id (not hotoned)  Seasonality 12")
+legend
+hold off
+
+
+mdlSARIMAX = modelTimeSeries6(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast tou_id (not hotoned)& a bunch of other shit & Seasonality 24")
+legend
+hold off
+
+
+mdlSARIMAX = modelTimeSeries7(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast tou_id & WeekDay & wrkHr & Seasonality 24")
+legend
+hold off
+
+
+mdlSARIMAX = modelTimeSeries8(data);
+nForecast = 24; 
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:end-nForecast) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+plot(TT.tstamp(end-96:end), respVar(end-96:end), "k", "DisplayName","Actual Value");
+title("Sarimax")
+hold on 
+plot(TT.tstamp(end-nForecast+1:end), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(end-nForecast+1:end), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(end-nForecast+1:end), upper, "r:", "DisplayName","95% confidence")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast tou_id & wrkHr & Seasonality 12")
+legend
+hold off
+
+
+startPoint = 2900;
+
+[pred, predMSE] = forecast(mdlSARIMAX, nForecast,"Y0", respVar(1:startPoint) );
+lower = pred - 1.96*sqrt(predMSE);
+upper = pred + 1.96*sqrt(predMSE);
+
+
+plot(TT.tstamp(startPoint-168:startPoint), respVar(startPoint-168:startPoint), "k", "DisplayName","Actual Value");
+title("Sarimax")
+
+hold on 
+plot(TT.tstamp(startPoint-nForecast+1:startPoint), pred, "b", "DisplayName","Forecasted Values")
+plot(TT.tstamp(startPoint-nForecast+1:startPoint), lower, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp(startPoint-nForecast+1:startPoint), upper, "r:", "DisplayName","95% confidence")
+plot(TT.tstamp((startPoint-168:startPoint)), data.wrkHr((startPoint-168:startPoint))*50,"m","DisplayName","WorkHours")
+xlabel("date");
+ylabel("System Power");
+title("SARIMAX Forcast tou_id & wrkHr & Seasonality 12")
+legend
+hold off
+
+
+
+
+
+Time Series Modeling Using the Econometric Modeler
+function SARIMAX_Yptot = modelTimeSeries(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 17:31:52
+Yptot = data.Yptot;
+Off_Peak = data.('Off-Peak');
+Peak = data.Peak;
+Standard = data.Standard;
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+SARIMAX_Yptot = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',2,'Seasonality',0,'SMALags',2,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,Off_Peak,Peak,Standard]),2));
+preSampleNumber = SARIMAX_Yptot.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot = estimate(SARIMAX_Yptot,estimateResponse,'Y0',preSampleResponse,'X',[Off_Peak,Peak,Standard],'Display','off');
+end
+function SARIMAX_Yptot2 = modelTimeSeries2(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot2)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 17:38:04
+Yptot = data.Yptot;
+Peak = data.Peak;
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+SARIMAX_Yptot2 = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',2,'Seasonality',0,'SMALags',2,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,Peak]),2));
+preSampleNumber = SARIMAX_Yptot2.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot2 = estimate(SARIMAX_Yptot2,estimateResponse,'Y0',preSampleResponse,'X',Peak,'Display','off');
+end
+function ARIMAX_Yptot = modelTimeSeries3(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (ARIMAX_Yptot)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 17:40:30
+Yptot = data.Yptot;
+Off_Peak = data.('Off-Peak');
+Peak = data.Peak;
+
+%% ARIMA Model Using Exogenous Predictors
+%Estimate an ARIMAX Model of Yptot
+ARIMAX_Yptot = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,Off_Peak,Peak]),2));
+preSampleNumber = ARIMAX_Yptot.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+ARIMAX_Yptot = estimate(ARIMAX_Yptot,estimateResponse,'Y0',preSampleResponse,'X',[Off_Peak,Peak],'Display','off');
+end
+
+function SARIMAX_Yptot = modelTimeSeries4(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 17:47:10
+Yptot = data.Yptot;
+Off_Peak = data.('Off-Peak');
+Peak = data.Peak;
+Sat = data.Sat;
+Standard = data.Standard;
+Sun = data.Sun;
+dayTime = data.dayTime;
+weekDay = data.weekDay;
+wrkHr = data.wrkHr;
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+SARIMAX_Yptot = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',2,'Seasonality',0,'SMALags',2,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,Off_Peak,Peak,Sat,Standard,Sun,dayTime,weekDay,wrkHr]),2));
+preSampleNumber = SARIMAX_Yptot.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot = estimate(SARIMAX_Yptot,estimateResponse,'Y0',preSampleResponse,'X',[Off_Peak,Peak,Sat,Standard,Sun,dayTime,weekDay,wrkHr],'Display','off');
+end
+
+function SARIMAX_Yptot = modelTimeSeries5(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 17:57:11
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+Yptot = data.Yptot;
+tou_id = data.tou_id;
+SARIMAX_Yptot = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',12,'Seasonality',12,'SMALags',12,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,tou_id]),2));
+preSampleNumber = SARIMAX_Yptot.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot = estimate(SARIMAX_Yptot,estimateResponse,'Y0',preSampleResponse,'X',tou_id,'Display','off');
+end
+
+function SARIMAX_Yptot2 = modelTimeSeries6(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot2)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 18:04:24
+Yptot = data.Yptot;
+Off_Peak = data.('Off-Peak');
+Peak = data.Peak;
+Sat = data.Sat;
+Standard = data.Standard;
+Sun = data.Sun;
+dayTime = data.dayTime;
+tou_id = data.tou_id;
+weekDay = data.weekDay;
+wrkHr = data.wrkHr;
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+SARIMAX_Yptot2 = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',24,'Seasonality',0,'SMALags',24,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,Off_Peak,Peak,Sat,Standard,Sun,dayTime,tou_id,weekDay,wrkHr]),2));
+preSampleNumber = SARIMAX_Yptot2.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot2 = estimate(SARIMAX_Yptot2,estimateResponse,'Y0',preSampleResponse,'X',[Off_Peak,Peak,Sat,Standard,Sun,dayTime,tou_id,weekDay,wrkHr],'Display','off');
+end
+
+
+function SARIMAX_Yptot3 = modelTimeSeries7(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot3)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 18:06:33
+Yptot = data.Yptot;
+tou_id = data.tou_id;
+weekDay = data.weekDay;
+wrkHr = data.wrkHr;
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+SARIMAX_Yptot3 = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',[],'Seasonality',0,'SMALags',[],'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,tou_id,weekDay,wrkHr]),2));
+preSampleNumber = SARIMAX_Yptot3.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot3 = estimate(SARIMAX_Yptot3,estimateResponse,'Y0',preSampleResponse,'X',[tou_id,weekDay,wrkHr],'Display','off');
+end
+
+function SARIMAX_Yptot4 = modelTimeSeries8(data)
+%%Time Series Modeling Using the Econometric Modeler
+% This code recreates the estimated model produced in the Econometric Modeler app. Use the code below to estimate the same model, or estimate a model with the same parameters on a new set of data.
+%
+%Input: A table with the same variables as the table imported into the app (data)
+%
+%Output: The model containing estimated parameters (SARIMAX_Yptot4)
+%
+%Auto-generated by MATLAB (R2023a) and Econometrics Toolbox Version 6.2 on 12-Sep-2023 18:08:40
+Yptot = data.Yptot;
+tou_id = data.tou_id;
+wrkHr = data.wrkHr;
+
+%% Seasonal ARIMA Model Using Exogenous Predictors
+% Estimate a SARIMAX Model of Yptot
+SARIMAX_Yptot4 = arima('Constant',NaN,'ARLags',1,'D',1,'MALags',1,'SARLags',12,'Seasonality',0,'SMALags',12,'Distribution','Gaussian');
+validIndices = find(~any(isnan([Yptot,tou_id,wrkHr]),2));
+preSampleNumber = SARIMAX_Yptot4.P;
+preSampleResponse = Yptot(validIndices(1:preSampleNumber));
+estimateResponse = Yptot(validIndices(preSampleNumber+1:end));
+SARIMAX_Yptot4 = estimate(SARIMAX_Yptot4,estimateResponse,'Y0',preSampleResponse,'X',[tou_id,wrkHr],'Display','off');
+end
