@@ -17,6 +17,7 @@ loadShedding = loadShedding(Area15Idx,:);
 data = outerjoin(data,loadShedding,"Type","left","LeftKeys",["date",...
     "time"],"RightKeys",["Date","Time"])
 
+
 ActiveShedding = ~isnan(data.Time);
 plot(data.date, data.ptot)
 hold on
@@ -26,3 +27,6 @@ legend("Menzies Load","Loadshedding UCT");
 title("Menzies electrical load & Loadshedding at UCT")
 xlabel("Date")
 ylabel("Power in kW")
+
+data.activeShedding = ~(ActiveShedding);
+writetable(data(:,'activeShedding'), "loadShedingHomer.csv");
