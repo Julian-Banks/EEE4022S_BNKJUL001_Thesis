@@ -1,0 +1,708 @@
+
+﻿
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <title>Input Summary</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" integrity="sha384-awusxf8AUojygHf2+joICySzB780jVvQaVCAt1clU3QsyAitLGul28Qxb2r1e5g+" crossorigin="anonymous">
+  <link href="report/c/site.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dimple/2.3.0/dimple.latest.js"></script>
+  <script src="report/c/site.js"></script>
+
+</head>
+<body>
+    <div class="container body-content">
+        
+
+
+    <form>
+        <fieldset>
+            <legend>Input Summary</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Project title</p></td>
+        <td><p>BNKJUL001ThesisV1</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Author</p></td>
+        <td><p></p></td>
+    </tr>
+
+                <tr>
+        <td><p>Notes</p></td>
+        <td><p>no limit</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Project Location</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Location</p></td>
+        <td><p>Level 6, Menzies building, Library Rd, Rondebosch, Cape Town, 7701, South Africa</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Latitude</p></td>
+        <td><p>33 degrees 57.52 minutes South</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Longitude</p></td>
+        <td><p>18 degrees 27.60 minutes East</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Time zone</p></td>
+        <td><p>Africa/Johannesburg</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+
+            <fieldset>
+                <legend>Load: Electric2</legend>
+                    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Data source</p></td>
+        <td><p>Imported</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Daily noise</p></td>
+        <td><p>13%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Hourly noise</p></td>
+        <td><p>13%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Scaled annual average</p></td>
+        <td><p>4,161.636 kWh/d</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Scaled peak load</p></td>
+        <td><p>304.4640 kW</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Load factor</p></td>
+        <td><p>0.5695</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+                    <div id="idLoad_Electric2Chart" class="chartContainer">
+        <script>LoadBarChart("#idLoad_Electric2Chart", "Load: Electric2", "Hour,Value\n0,119.5922\n1,119.6984\n2,119.184\n3,118.9568\n4,118.3289\n5,118.3934\n6,118.0939\n7,159.3819\n8,172.6303\n9,177.4803\n10,184.8034\n11,188.2854\n12,190.9705\n13,192.5898\n14,193.1684\n15,193.0157\n16,193.164\n17,189.9173\n18,183.979\n19,179.4902\n20,135.0635\n21,124.9397\n22,123.9355\n23,122.655\n")</script>
+    </div>
+
+            </fieldset>
+            <fieldset>
+                <legend>Load: Electric1</legend>
+                    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Data source</p></td>
+        <td><p>Imported</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Daily noise</p></td>
+        <td><p>26%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Hourly noise</p></td>
+        <td><p>22%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Scaled annual average</p></td>
+        <td><p>2,111.905 kWh/d</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Scaled peak load</p></td>
+        <td><p>211.7000 kW</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Load factor</p></td>
+        <td><p>0.4157</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+                    <div id="idLoad_Electric1Chart" class="chartContainer">
+        <script>LoadBarChart("#idLoad_Electric1Chart", "Load: Electric1", "Hour,Value\n0,52.08261\n1,52.07826\n2,51.71305\n3,52.01305\n4,51.91305\n5,51.88261\n6,51.11304\n7,54.6261\n8,66.77826\n9,69.6087\n10,70.37391\n11,74.96522\n12,73.13913\n13,77.34782\n14,73.11739\n15,72.20435\n16,69.25652\n17,56.17391\n18,55.14783\n19,54.30001\n20,54.43042\n21,53.43913\n22,54.49565\n23,53.11739\n")</script>
+    </div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Microgrid Controller: HOMER Cycle Charging</legend>
+                    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Quantity</th>
+                <th>Capital</th>
+                <th>Replacement</th>
+                <th>O&M</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td><p>1</p></td>
+                    <td><p>R0.00</p></td>
+                    <td><p>R0.00</p></td>
+                    <td><p>R0.00</p></td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Minimization strategy</p></td>
+        <td><p>Economic</p></td>
+    </tr>
+
+    <tr>
+        <td><p>Setpoint state of charge</p></td>
+        <td><p>80</p></td>
+    </tr>
+                <tr>
+        <td><p>Allow multiple generators to operate simultaneously</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Allow systems with generator capacity less than peak load</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Allow diesel off operation</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>PV:Generic flat plate PV</legend>
+                    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Capital</th>
+                <th>Replacement</th>
+                <th>O&M</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-condensed">
+        <tbody>
+            <tr>
+        <td><p>Sizes to consider</p></td>
+        <td><p>0,1</p></td>
+    </tr>
+
+            <tr>
+        <td><p>Lifetime</p></td>
+        <td><p>25 yr</p></td>
+    </tr>
+
+            <tr>
+        <td><p>Derating factor</p></td>
+        <td><p>80%</p></td>
+    </tr>
+
+            <tr>
+        <td><p>Tracking system</p></td>
+        <td><p>No Tracking</p></td>
+    </tr>
+
+            <tr>
+        <td><p>Slope</p></td>
+        <td><p>33.959 deg</p></td>
+    </tr>
+
+            <tr>
+        <td><p>Azimuth</p></td>
+        <td><p>180.000 deg</p></td>
+    </tr>
+
+            <tr>
+        <td><p>Ground reflectance</p></td>
+        <td><p>20.0%</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Solar Resource</legend>
+                    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Scaled annual average</p></td>
+        <td><p>5.43 kWh/m2/d</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+                    <div id="idSolarChart" class="chartContainer">
+        <script>ResourceBarChart("#idSolarChart", "Solar", "Month,Value\nJan,8.17\nFeb,7.3\nMar,5.91\nApr,4.3\nMay,3.09\nJun,2.64\nJul,2.85\nAug,3.67\nSep,4.92\nOct,6.46\nNov,7.68\nDec,8.18\n", "Daily Radiation (kWh/m2/d)")</script>
+    </div>
+;
+            </fieldset>
+
+            <fieldset>
+                <legend>Wind Turbine:Generic 10 kW</legend>
+                    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Quantity</th>
+                <th>Capital</th>
+                <th>Replacement</th>
+                <th>O&M</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td><p>1</p></td>
+                    <td><p>R48,598.00</p></td>
+                    <td><p>R48,598.00</p></td>
+                    <td><p>R500.00</p></td>
+                </tr>
+        </tbody>
+    </table>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Wind Resource</legend>
+                    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Scaled annual average</p></td>
+        <td><p>7.08</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+                    <div id="idWindChart" class="chartContainer">
+        <script>ResourceBarChart("#idWindChart", "Wind", "Month,Value\nJan,7.91\nFeb,7.71\nMar,7.18\nApr,6.6\nMay,6.18\nJun,6.58\nJul,6.67\nAug,6.69\nSep,6.77\nOct,7.38\nNov,7.65\nDec,7.64\n", "Wind Speed (m/s)")</script>
+    </div>
+;
+            </fieldset>
+
+            <fieldset>
+                <legend>Generator:Autosize Genset</legend>
+                    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Capital</th>
+                <th>Replacement</th>
+                <th>O&M</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td><p>1.00</p></td>
+                    <td><p>R2,919.00</p></td>
+                    <td><p>R2,919.00</p></td>
+                    <td><p>R0.30</p></td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Sizes to consider</p></td>
+        <td><p>560</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Lifetime</p></td>
+        <td><p>15,000 hrs</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Min. load ratio</p></td>
+        <td><p>25%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Heat recovery ratio</p></td>
+        <td><p>0%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Fuel used</p></td>
+        <td><p>Diesel</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Fuel curve intercept</p></td>
+        <td><p>0.0176 L/hr/kW</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Fuel curve slope</p></td>
+        <td><p>0.2360 L/hr/kW</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+                <!-- todo: efficiency curve chart -->
+            </fieldset>
+
+            <fieldset>
+                <legend>Fuel: Diesel</legend>
+                    <table class="table table-bordered table-condensed">
+        <tbody>
+    <tr>
+        <td><p>Price</p></td>
+        <td><p>R 23.00/L</p></td>
+    </tr>
+                <tr>
+        <td><p>Lower heating value</p></td>
+        <td><p>43.2 MJ/kg</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Density</p></td>
+        <td><p>820.00 kg/m3</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Carbon content</p></td>
+        <td><p>88.0%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Sulfur content</p></td>
+        <td><p>0.4%</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Battery:Generic 100kWh Li-Ion</legend>
+                    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Quantity</th>
+                <th>Capital</th>
+                <th>Replacement</th>
+                <th>O&M</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td><p>1</p></td>
+                    <td><p>R646,963.00</p></td>
+                    <td><p>R646,963.00</p></td>
+                    <td><p>R1,000.00</p></td>
+                </tr>
+        </tbody>
+    </table>
+        <table class="table table-bordered table-condensed">
+            <tbody>
+    <tr>
+        <td><p>Quantities to consider</p></td>
+        <td><p>0,1</p></td>
+    </tr>
+                        </tbody>
+        </table>
+
+            </fieldset>
+
+        
+            <fieldset>
+                <legend>Converter</legend>
+                    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Capital</th>
+                <th>Replacement</th>
+                <th>O&M</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td><p>1.00</p></td>
+                    <td><p>R300.00</p></td>
+                    <td><p>R300.00</p></td>
+                    <td><p>R0.00</p></td>
+                </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Sizes to consider</p></td>
+        <td><p>100,0 kW</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Lifetime</p></td>
+        <td><p>15 yr</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Inverter can parallel with AC generator</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+            </fieldset>
+
+        <fieldset>
+            <legend>Economics</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Annual real interest rate</p></td>
+        <td><p>-6%</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Project lifetime</p></td>
+        <td><p>25 yr</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Capacity shortage penalty</p></td>
+        <td><p>R5/kWh</p></td>
+    </tr>
+
+                <tr>
+        <td><p>System fixed capital cost</p></td>
+        <td><p>0</p></td>
+    </tr>
+
+                <tr>
+        <td><p>System fixed O&M cost</p></td>
+        <td><p>0</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>System control</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Timestep length in minutes</p></td>
+        <td><p>60</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Multi-Year enabled</p></td>
+        <td><p>No</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Allow systems with multiple generators</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Allow systems with multiple wind turbine types</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Battery autonomy threshold</p></td>
+        <td><p>2</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Maximum renewable penetration threshold</p></td>
+        <td><p>55</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Warn about renewable penetration</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Optimizer</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Maximum simulations</p></td>
+        <td><p>10000</p></td>
+    </tr>
+
+                <tr>
+        <td><p>System design precision</p></td>
+        <td><p>0.01</p></td>
+    </tr>
+
+                <tr>
+        <td><p>NPC precision</p></td>
+        <td><p>0.01</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Minimum spacing</p></td>
+        <td><p>0</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Focus factor</p></td>
+        <td><p>50</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Optimize category winners</p></td>
+        <td><p>Yes</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Use base case</p></td>
+        <td><p>No</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Emissions</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Carbon dioxide penalty</p></td>
+        <td><p>R 0/t</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Carbon monoxide penalty</p></td>
+        <td><p>R 0/t</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Unburned hydrocarbons penalty</p></td>
+        <td><p>R 0/t</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Particulate matter penalty</p></td>
+        <td><p>R 0/t</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Sulfur dioxide penalty</p></td>
+        <td><p>R 0/t</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Nitrogen oxides penalty</p></td>
+        <td><p>R 0/t</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Constraints</legend>
+                <table class="table table-bordered table-condensed">
+        <tbody>
+                <tr>
+        <td><p>Maximum annual capacity shortage</p></td>
+        <td><p>20</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Minimum renewable fraction</p></td>
+        <td><p>0</p></td>
+    </tr>
+
+
+                <tr>
+        <td><p>Operating reserve as percentage of hourly load</p></td>
+        <td><p>10</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Operating reserve as percentage of peak load</p></td>
+        <td><p>0</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Operating reserve as percentage of solar power output</p></td>
+        <td><p>80</p></td>
+    </tr>
+
+                <tr>
+        <td><p>Operating reserve as percentage of wind power output</p></td>
+        <td><p>50</p></td>
+    </tr>
+
+        </tbody>
+    </table>
+
+        </fieldset>
+    </form>
+
+
+        <hr />
+        <footer>
+            <p>HOMER Energy, LLC &copy; 2023</p>
+        </footer>
+    </div>
+</body>
+</html>
