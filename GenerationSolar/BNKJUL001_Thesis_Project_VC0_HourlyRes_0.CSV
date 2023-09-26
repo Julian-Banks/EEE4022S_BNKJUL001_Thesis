@@ -1,16 +1,16 @@
-PVSYST 7.4.2
-,File,File date,Description
-Project,BNKJUL001_Thesis_Project.PRJ,26/09/23 15h25,BNKJUL001_Thesis,
-Geographical Site,New.SIT,26/09/23 15h25,Menzies, University of Cape Town;South Africa;Africa;,
-Meteo data,Menzies_ University of Cape Town_MN81mod_SYN.MET,26/09/23 15h19,Menzies, University of Cape Town;Meteonorm 8.1 (2000-2017), Sat=100% (Modified by user);Synthetic,
-Simulation variant,New.VC0,Invalid date 0;0;0;0;0;0,New simulation variant,
-Simulation date,,26/09/23 15h34
-
-Simulation:,Hourly values, from 01/01/90, to 31/12/90 
-
+PVSYST 7.4.2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,File,File date,Description,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Project,BNKJUL001_Thesis_Project.PRJ,26/09/23 15h25,BNKJUL001_Thesis,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Geographical Site,New.SIT,26/09/23 15h25,Menzies, University of Cape Town;South Africa;Africa;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Meteo data,Menzies_ University of Cape Town_MN81mod_SYN.MET,26/09/23 15h19,Menzies, University of Cape Town;Meteonorm 8.1 (2000-2017), Sat=100% (Modified by user);Synthetic,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Simulation variant,New.VC0,Invalid date 0;0;0;0;0;0,New simulation variant,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Simulation date,,26/09/23 15h34,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Simulation:,Hourly values, from 01/01/90, to 31/12/90 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 date,GlobInc,GlobEff,EArray,E_Grid,PR,GlobHor,DiffHor,BeamHor,T_Amb,WindVel,HSol,AzSol,AngInc,AngProf,FTransp,FIAMGl,FIAMBm,FIAMCrc,FIAMDif,FIAMAlb,FIAMShd,FEffDif,FEffAlb,BeamTrp,DifITrp,CircTrp,HBndTrp,AlbTrp,GlobTrp,EUseful,EffArrR,EffArrC,EffSysR,EffSysC,EffInvB,EffInvR
     ,W/m²,W/m²,kW,kW,ratio,W/m²,W/m²,W/m²,°C,m/s,°,°,°,°,ratio,ratio,ratio,ratio,ratio,ratio,ratio,ratio,ratio,W/m²,W/m²,W/m²,W/m²,W/m²,W/m²,kW,%,%,%,%,%,%
-
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 01/01/90 00:00,0,0,0,0,0,0,0,0,21.44,3.0998,0,0,90,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0
 01/01/90 01:00,0,0,0,0,0,0,0,0,20.57,2.7001,0,0,90,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0
 01/01/90 02:00,0,0,0,0,0,0,0,0,20,2.7001,0,0,90,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0
