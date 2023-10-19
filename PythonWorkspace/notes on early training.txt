@@ -1,0 +1,149 @@
+
+
+
+
+Generated after 1.6million training timesteps
+The ems\_score was averaged over 1000 runs 
+
+Deterministic = False
+Done the Standby Test! Total reward accumulated is: -308596.6616592407
+Done applying the trained model! Total reward accumulated is: -297117.26975013735 +- 2059.6419993850263
+The amount that was saved by applying the EMS agent: 11479.391909103375
+This was saved over a period of 115.0 days
+The savings represent 3.7198691156870565 \% of the cost if no EMS is installed
+And it represents 3.863589591664275 \% of the cost if the EMS is installed
+
+Deterministic = True
+Done the Standby Test! Total reward accumulated is: -308596.6616592407
+Done applying the trained model! Total reward accumulated is: -289641.24562835693 +- 0.0
+The amount that was saved by applying the EMS agent: 18955.41603088379
+This was saved over a period of 115.0 days
+The savings represent 6.142456606291736 % of the cost if no EMS is installed
+And it represents 6.544446385652466 % of the cost if the EMS is installed
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.8\textwidth]{Images/EMSv0.1_PPO_reward.png}
+    \caption{The mean episode reward of and PPO model in the EMSv0.1 environment over 1.8 million timesteps }
+    \label{fig:EMSv0.1_PPO_reward}
+\end{figure}
+
+
+
+\textbf{Results of EMSv0.1\_A2C}
+
+NB these results were generated using the best-performing model near the beginning.
+
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -308596.6616592407
+Done applying the trained model! Total cost accumulated is: -309525.51413726807
+The amount that was saved by applying the EMS agent: -928.8524780273438
+This was saved over a period of 115.0 days
+The savings represents -0.30099239344753614\% of the cost if no EMS is installed
+And it represents -0.3000891479386792\% of the cost if the EMS is installed
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.8\textwidth]{Images/EMSv0.1_A2C_reward.png}
+    \caption{The mean episode reward of and A2C model in the EMSv0.1 environment over 1.2 million timesteps }
+    \label{fig:EMSv0.1_A2C_reward}
+\end{figure}
+
+\textbf{Results of EMSv0.2\_PPO}
+
+Deterministic = True
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -308596.6616592407
+Done applying the trained model! Total cost accumulated is: -292403.35512542725 +- 0.0
+The amount that was saved by applying the EMS agent: 16193.306533813477
+This was saved over a period of 115.0 days
+The savings represent 5.24740172066232 \% of the cost if no EMS is installed
+And it represents 5.538002984564699 \% of the cost if the EMS is installed
+
+Deterministic = False
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -308596.6616592407
+Done applying the trained model! Total cost accumulated is: -295807.0799106598 +- 2118.4823226584476
+The amount that was saved by applying the EMS agent: 12789.58174858091
+This was saved over a period of 115.0 days
+The savings represents 4.144432956537764 % of the cost if no EMS is installed
+And it represents 4.323622596336653 % of the cost if the EMS is installed
+
+
+\textbf{Results of EMSv0.2.1\_PPO}
+
+Deterministic = False
+
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -309839.33152008057
+Done applying the trained model! Total cost accumulated is: -297615.9762627411 +- 2366.136039016693
+The amount that was saved by applying the EMS agent: 12223.355257339485
+This was saved over a period of 115.0 days
+The savings represents 3.9450624933159246 % of the cost if no EMS is installed
+And it represents 4.10708975063505 % of the cost if the EMS is installed
+
+Deterministic = False
+Trained 1 500 000 timesteps
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -309839.33152008057
+Done applying the trained model! Total cost accumulated is: -290364.4527053833 +- 0.0
+The amount that was saved by applying the EMS agent: 19474.878814697266
+This was saved over a period of 115.0 days
+The savings represent 6.285476643379314 \% of the cost if no EMS is installed
+And it represents 6.707046483564345 \% of the cost if the EMS is installed
+
+Trained 900 000 timesteps
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -309839.33152008057
+Done applying the trained model! Total cost accumulated is: -286204.5726699829 +- 0.0
+The amount that was saved by applying the EMS agent: 23634.758850097656
+This was saved over a period of 115.0 days
+The savings represents 7.6280692751771895 \% of the cost if no EMS is installed
+And it represents 8.25799484250395 \% of the cost if the EMS is installed
+
+Makes me think I might be over training, Going to start using  evalCallbacks!
+
+
+
+\textbf{Results of EMSv0.2.1\_A2C}
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -309839.33152008057
+Done applying the trained model! Total cost accumulated is: -328105.00497436523 +- 0.0
+The amount that was saved by applying the EMS agent: -18265.673454284668
+This was saved over a period of 115.0 days
+The savings represents -5.89520812760367 % of the cost if no EMS is installed
+And it represents -5.567020672455686 % of the cost if the EMS is installed
+
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.8\textwidth]{Images/EMSv0.2.1_mean_reward.png}
+    \caption{The mean episode reward for the EMSv0.2.1 environment using A2C and PPO networks}
+    \label{fig:EMSv0.2.1_mean_reward}
+\end{figure}
+
+\textbf{Results of EMSv0.3\_PPO}
+n\_env = 10
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -440125.59375
+Done applying the trained model! Total cost accumulated is: -409098.94202500005 +- 5.820766091346741e-11
+The amount that was saved by applying the EMS agent: 31026.651724999945
+This was saved over a period of 115.0 days
+The savings represents 7.049499544128691\% of the cost if no EMS is installed
+And it represents 7.58414372117929\% of the cost if the EMS is installed
+
+
+\textbf{Results of EMSv1.0\_A2C}
+Note: The term does not refer to the cost in rands but rather to the reward as defined by the reward function!
+Done the Standby Test! Total cost accumulated is: -274710.90625
+Done applying the trained model! Total cost accumulated is: -193472.975529 +- 0.0
+The amount that was saved by applying the EMS agent: 81237.93072100001
+This was saved over a period of 115.0 days
+The savings represents 29.572153443034267 \% of the cost if no EMS is installed
+And it represents 41.98929101021818 \% of the cost if the EMS is installed
+
+\textbf{Results of EMSv1.0\_PPO}
+
+
+\textbf{Results of EMSv1.1\_PPO}
